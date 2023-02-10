@@ -3,6 +3,7 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.utils import executor
 
 from config import TOKEN
+from keyboards import *
 from consts import *
 from image_search import *
 
@@ -13,7 +14,8 @@ dp = Dispatcher(bot)
 
 @dp.message_handler(commands=['start'])
 async def start_command(msg: types.Message):
-    await bot.send_message(msg.from_user.id, START_MSG)
+    await bot.send_message(msg.from_user.id, START_MSG,
+                           reply_markup=second_kb)
 
 
 @dp.message_handler(commands=['photo'])
@@ -27,6 +29,7 @@ async def photo_command(msg: types.Message):
 async def url_photo_command(msg: types.Message):
     await bot.send_photo(msg.from_user.id,
                          "https://s0.rbk.ru/v6_top_pics/media/img/1/05/756637621281051.jpg")
+
 
 @dp.message_handler(commands=['cat_photo'])
 async def cat_photo_command(msg: types.Message):
@@ -79,6 +82,12 @@ async def pong(msg: types.Message):
 async def echo_message(msg: types.Message):
     text = msg.from_user.full_name + " say: " + msg.text
     await bot.send_message(msg.from_user.id, text)
+
+
+@dp.callback_query_handler(lambda x: x.data == BUTTON1)
+async def press_button1(callback: types.CallbackQuery):
+    await bot.answer_callback_query(callback.id)
+    await bot.send_message(callback.from_user.id, "Я знаю, что вы делали прошлым летом")
 
 
 if __name__ == "__main__":

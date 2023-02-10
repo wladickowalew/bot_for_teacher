@@ -12,3 +12,5 @@ HELP_COMMANDS = {"help": "выводит это сообщение",
 CALC_EVAL_ERROR = "Неверное выражение"
 CAT_URL_DOWNLOAD_ERROR = "Не удалось загрузить картинку котика((("
 NUMBER_INFO_ERROR = "Ошибка загрузки информации о числе"
+
+BUTTON1 = "button1"
