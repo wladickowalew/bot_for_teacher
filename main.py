@@ -1,8 +1,10 @@
 import datetime
 from aiogram import Bot, Dispatcher, types
 from aiogram.utils import executor
+
 from config import TOKEN
 from consts import *
+from image_search import *
 
 
 bot = Bot(token=TOKEN)
@@ -13,6 +15,35 @@ dp = Dispatcher(bot)
 async def start_command(msg: types.Message):
     await bot.send_message(msg.from_user.id, START_MSG)
 
+
+@dp.message_handler(commands=['photo'])
+async def photo_command(msg: types.Message):
+    await bot.send_photo(msg.from_user.id,
+                         open("images/1.jpg", "rb"),
+                         caption="мой заголовок")
+
+
+@dp.message_handler(commands=['url_photo'])
+async def url_photo_command(msg: types.Message):
+    await bot.send_photo(msg.from_user.id,
+                         "https://s0.rbk.ru/v6_top_pics/media/img/1/05/756637621281051.jpg")
+
+@dp.message_handler(commands=['cat_photo'])
+async def cat_photo_command(msg: types.Message):
+    try:
+        url = get_cat_image_url()
+        await bot.send_photo(msg.from_user.id, url)
+    except Exception:
+        await bot.send_message(msg.from_user.id, CAT_URL_DOWNLOAD_ERROR)
+
+
+@dp.message_handler(commands=['number_fact'])
+async def number_fact_command(msg: types.Message):
+    try:
+        num = msg.get_args()
+        await bot.send_message(msg.from_user.id, get_number_information(num))
+    except Exception:
+        await bot.send_message(msg.from_user.id, NUMBER_INFO_ERROR)
 
 @dp.message_handler(commands=['help'])
 async def help_command(msg: types.Message):
